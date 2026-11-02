@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f7f2" />
+    <meta name="description" content="Un atelier simple pour apprendre à reconnaître les faux courriels, même quand ils semblent vrais." />
+    <title>Courriel Vigilance — Reconnaître les faux messages</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navigation de l’atelier">
+        <div class="brand" aria-label="Messagerie de démonstration inspirée de Gmail">
+          <span class="brand-mark" aria-hidden="true">M</span>
+          <span>Gmail <small>exercice</small></span>
+        </div>
+
+        <div class="compose-demo"><span aria-hidden="true">✎</span> Nouveau message</div>
+
+        <nav class="side-nav" aria-label="Sections">
+          <button class="nav-item active" type="button" id="nav-inbox" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">✉</span>
+            <span>Boîte de réception</span>
+            <span class="nav-count" id="unread-count">5</span>
+          </button>
+          <button class="nav-item" type="button" id="nav-guide">
+            <span class="nav-icon" aria-hidden="true">☷</span>
+            <span>Les bons réflexes</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="progress-card">
+            <div class="progress-hero"><div class="progress-ring" id="progress-ring"><span id="progress-big">0</span><small>/ 5</small></div><div><span class="progress-caption">VOTRE PARCOURS</span><strong id="progress-label">0 / 5</strong><span class="progress-encourage" id="progress-message">Prêt à mener l’enquête ?</span></div></div>
+            <div class="progress-track" role="progressbar" aria-label="Courriels examinés" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+            <p id="score-label">0 bonne réponse</p>
+          </div>
+          <div class="simulation-note"><span aria-hidden="true">ⓘ</span><span>Exercice : les messages et les adresses d’envoi sont inventés. Aucun lien ne quitte cette page.</span></div>
+        </div>
+      </aside>
+
+      <main class="main-area" id="main-content">
+        <header class="topbar">
+          <label class="search-box"><span aria-hidden="true">⌕</span><span class="sr-only">Rechercher dans les courriels</span><input id="search-input" type="search" placeholder="Rechercher dans les courriels" autocomplete="off" /></label>
+          <div class="topbar-actions">
+            <span class="topbar-demo">Exercice sans risque</span>
+            <span class="top-progress" id="top-progress" aria-live="polite">0 / 5 examinés</span>
+            <button class="text-size-button" type="button" id="text-size-button" aria-pressed="false" title="Agrandir le texte"><span aria-hidden="true">A<span class="big-a">A</span></span><span class="button-label">Texte plus grand</span></button>
+            <span class="avatar" aria-label="Compte de démonstration">JD</span>
+          </div>
+        </header>
+
+        <section class="inbox-view" id="inbox-view" aria-label="Boîte de réception">
+          <div class="inbox-column">
+            <div class="column-heading">
+              <div><span class="eyebrow">APPRENDRE À REPÉRER LES FAUX MESSAGES</span><h2>Boîte de réception <span class="heading-count">5</span></h2></div>
+              <button class="guide-link" type="button" id="inbox-guide-button">Comment repérer les pièges <span aria-hidden="true">↗</span></button>
+            </div>
+            <div class="list-help"><span class="list-help-icon" aria-hidden="true">✦</span><span>Cinq messages, cinq situations différentes. Le premier vous montre les signes d’alerte; pour les autres, à vous de décider.</span></div>
+            <div class="mission-card"><div class="mission-copy"><span class="eyebrow">VOTRE DÉFI</span><strong id="mission-title">Menez l’enquête sur 5 courriels</strong><p id="mission-subtitle">Choisissez un message pour commencer.</p><button class="reset-progress" id="reset-progress" type="button">Recommencer l’exercice</button></div><div class="mission-dots" id="mission-dots" aria-label="Choisir un courriel par numéro"></div></div>
+            <div class="inbox-tab" id="inbox-tab"><span aria-hidden="true">▤</span> Principale <span class="tab-count" id="tab-count">0 / 5</span></div>
+            <div class="email-list" id="email-list" aria-label="Courriels reçus"></div>
+            <div class="list-footer">Tous les exemples sont inventés. Les liens et fichiers restent dans cet exercice.</div>
+          </div>
+
+          <section class="reader-column" aria-label="Courriel sélectionné">
+            <div class="reader-toolbar">
+              <button class="back-button" type="button" id="back-button" aria-label="Retour à la boîte de réception">←</button>
+              <span class="reader-position" id="reader-position">COURRIEL 1 SUR 5</span>
+              <button class="mark-unread-button" type="button" id="mark-unread-button">Marquer non lu</button>
+              <button class="reader-tour-button" type="button" id="replay-tour-button" hidden>Revoir la démonstration <span aria-hidden="true">✦</span></button>
+              <button class="reader-guide-button" type="button" id="reader-guide-button">Voir les conseils <span aria-hidden="true">☷</span></button>
+            </div>
+            <div class="reader-scroll">
+              <div class="message-head">
+                <span class="message-type">MESSAGE REÇU</span>
+                <h2 id="message-subject" tabindex="-1"></h2>
+                <div class="sender-row">
+                  <span class="sender-avatar" id="sender-avatar" aria-hidden="true"></span>
+                  <div class="sender-details"><strong id="sender-name"></strong><span id="sender-address" tabindex="0"></span></div>
+                  <time id="message-date"></time>
+                </div>
+              </div>
+              <div class="message-body" id="message-body"></div>
+              <div class="safe-link-note" id="safe-link-note" hidden><span aria-hidden="true">ⓘ</span><span>Dans cet exercice, les liens et fichiers restent sur cette page.</span></div>
+
+              <div class="decision-panel" id="decision-panel">
+                <div class="decision-title"><span class="decision-icon" aria-hidden="true">?</span><div><h3>Qu’en pensez-vous ?</h3><p>Est-ce un vrai message ou un piège ?</p></div></div>
+                <div class="decision-actions">
+                  <button class="choice-button choice-danger" type="button" data-answer="phishing">Je pense que c’est un piège</button>
+                  <button class="choice-button choice-safe" type="button" data-answer="legit">Je pense que ce message est normal</button>
+                </div>
+                <button class="reveal-button" type="button" id="reveal-button">Voir les explications sans répondre <span aria-hidden="true">↗</span></button>
+              </div>
+
+              <div class="feedback-panel" id="feedback-panel" hidden aria-live="polite"></div>
+              <div class="reader-next"><button type="button" id="next-button">Courriel suivant <span aria-hidden="true">→</span></button></div>
+            </div>
+          </section>
+
+          <aside class="guide-column" aria-label="Conseils et indices">
+            <div class="guide-header"><span class="guide-spark" aria-hidden="true">✦</span><div><span class="eyebrow">VOTRE GUIDE</span><h2>Le regard vigilant</h2></div><button class="guide-close" id="guide-close" type="button" aria-label="Fermer les conseils">×</button></div>
+            <div class="guide-intro"><p>Un message peut être très bien écrit et être quand même une arnaque.</p><p><strong>L’intelligence artificielle peut imiter la façon d’écrire d’une entreprise ou d’un proche.</strong> Prenez le temps de vérifier par un chemin que vous connaissez déjà.</p></div>
+            <div class="guide-rule"></div>
+            <div class="clue-heading"><span class="eyebrow">POUR CE MESSAGE</span><h3>Ce qu’il faut regarder</h3></div>
+            <div class="clues-locked" id="clues-locked"><span aria-hidden="true">⌕</span><p>Choisissez une réponse ou cliquez sur « Voir les explications ».</p></div>
+            <div class="clues-list" id="clues-list" hidden></div>
+            <div class="guide-rule"></div>
+            <div class="guide-reminder"><span class="reminder-icon" aria-hidden="true">✳</span><p><strong>Si vous hésitez :</strong> ne cliquez pas. Appelez la personne ou l’entreprise avec un numéro que vous connaissez déjà.</p></div>
+          </aside>
+        </section>
+
+        <section class="guide-view" id="guide-view" aria-labelledby="guide-page-title" hidden>
+          <div class="guide-page-head"><span class="eyebrow">LES BONS GESTES</span><h2 id="guide-page-title">Avant de cliquer, prenez une minute.</h2><p>Même un message bien écrit peut être faux. L’intelligence artificielle peut écrire des messages qui semblent vrais. Voici les gestes à retenir.</p></div>
+          <h3 class="guide-section-title">Avant de répondre ou de cliquer</h3>
+          <div class="rules-grid">
+            <article class="rule-card"><span class="rule-number">01</span><span class="rule-symbol" aria-hidden="true">?</span><h3>Attendiez-vous ce message ?</h3><p>Une commande, une livraison ou une facture que vous ne reconnaissez pas mérite une vérification, même avec votre nom dessus.</p></article>
+            <article class="rule-card"><span class="rule-number">02</span><span class="rule-symbol" aria-hidden="true">@</span><h3>Qui vous écrit vraiment ?</h3><p>Le grand nom et le logo peuvent être copiés. Agrandissez la petite adresse sous le nom et lisez-la jusqu’au bout.</p></article>
+            <article class="rule-card"><span class="rule-number">03</span><span class="rule-symbol" aria-hidden="true">↗</span><h3>Où mène le lien ?</h3><p>Sur ordinateur, posez la souris sur le bouton sans cliquer. Lisez l’adresse affichée en bas : une seule lettre changée peut vous mener ailleurs.</p></article>
+            <article class="rule-card"><span class="rule-number">04</span><span class="rule-symbol" aria-hidden="true">⌛</span><h3>Vous presse-t-on ?</h3><p>« Avant ce soir » ou « votre compte sera bloqué » vous pousse à agir vite. Faites une pause avant de décider.</p></article>
+            <article class="rule-card"><span class="rule-number">05</span><span class="rule-symbol" aria-hidden="true">✳</span><h3>Vous demande-t-on un secret ?</h3><p>Ne donnez pas votre mot de passe, un code reçu sur votre téléphone ou votre numéro de carte à partir d’un message.</p></article>
+            <article class="rule-card"><span class="rule-number">06</span><span class="rule-symbol" aria-hidden="true">☎</span><h3>Un numéro à appeler ?</h3><p>Un numéro écrit dans un courriel peut être faux. Prenez plutôt celui de votre facture, de votre carte ou du site que vous ouvrez vous-même.</p></article>
+            <article class="rule-card"><span class="rule-number">07</span><span class="rule-symbol" aria-hidden="true">▣</span><h3>Un fichier inattendu ?</h3><p>N’ouvrez pas un document reçu sans l’attendre, même s’il ressemble à une facture, des photos ou un cadeau.</p></article>
+            <article class="rule-card"><span class="rule-number">08</span><span class="rule-symbol" aria-hidden="true">▦</span><h3>Un carré à scanner ?</h3><p>Un code carré dans un courriel peut vous mener à un faux site, comme un lien. Ne le scannez pas pour régler un problème inattendu.</p></article>
+            <article class="rule-card"><span class="rule-number">09</span><span class="rule-symbol" aria-hidden="true">★</span><h3>Un prix ou un remboursement ?</h3><p>Un cadeau inattendu ou de l’argent promis peut servir à obtenir vos renseignements. Vérifiez l’offre par votre chemin habituel.</p></article>
+            <article class="rule-card"><span class="rule-number">10</span><span class="rule-symbol" aria-hidden="true">♡</span><h3>Un proche demande de l’argent ?</h3><p>Appelez-le au numéro que vous avez déjà. Son prénom, sa photo et même une voix familière ne suffisent pas à confirmer son identité.</p></article>
+            <article class="rule-card"><span class="rule-number">11</span><span class="rule-symbol" aria-hidden="true">✦</span><h3>Le texte semble parfait ?</h3><p>Une faute peut alerter, mais un texte sans faute ne prouve rien. L’intelligence artificielle peut écrire un message très convaincant.</p></article>
+            <article class="rule-card"><span class="rule-number">12</span><span class="rule-symbol" aria-hidden="true">✓</span><h3>Vérifiez par un autre chemin</h3><p>Ouvrez vous-même l’application ou le site habituel. Au besoin, demandez l’avis d’une personne de confiance avant d’agir.</p></article>
+          </div>
+          <h3 class="guide-section-title">Si vous avez déjà cliqué</h3>
+          <div class="rules-grid">
+            <article class="rule-card"><span class="rule-number">13</span><span class="rule-symbol" aria-hidden="true">✋</span><h3>Arrêtez-vous</h3><p>Fermez la page douteuse et n’y entrez aucun renseignement. Si un fichier s’est ouvert, demandez de l’aide. Un clic seul ne veut pas dire que tout est perdu.</p></article>
+            <article class="rule-card"><span class="rule-number">14</span><span class="rule-symbol" aria-hidden="true">☎</span><h3>Vous avez donné quelque chose ?</h3><p>Si vous avez donné un mot de passe, changez-le depuis le vrai site. Si vous avez donné de l’argent, un code ou une carte, appelez vite votre banque ou l’organisme concerné.</p></article>
+            <article class="rule-card"><span class="rule-number">15</span><span class="rule-symbol" aria-hidden="true">⚑</span><h3>Signalez le message</h3><p>Utilisez « Signaler » dans votre vraie boîte courriel. Au Canada, vous pouvez aussi prévenir le Centre antifraude du Canada, même si vous n’avez rien perdu.</p></article>
+          </div>
+          <div class="guide-cta"><div><span class="eyebrow">À VOUS DE JOUER</span><h3>Prêt à tester votre regard ?</h3><p>Retournez dans la boîte de réception et examinez les cinq exemples.</p></div><button type="button" id="back-to-inbox">Ouvrir les courriels <span aria-hidden="true">→</span></button></div>
+        </section>
+      </main>
+    </div>
+    <div class="link-preview" id="link-preview" hidden role="status" aria-live="polite"><span class="preview-label">Ce lien mènerait à</span><span id="link-preview-address"></span></div>
+    <div class="tour-backdrop" id="tour-backdrop" hidden aria-hidden="true"><div class="tour-shade" id="tour-shade-top"></div><div class="tour-shade" id="tour-shade-bottom"></div><div class="tour-shade" id="tour-shade-left"></div><div class="tour-shade" id="tour-shade-right"></div></div>
+    <section class="tour-note" id="tour-note" role="dialog" aria-modal="true" aria-labelledby="tour-title" hidden>
+      <div class="tour-note-top"><span id="tour-step-counter">ÉTAPE 1 SUR 5</span><button type="button" id="tour-close">Passer le guide</button></div>
+      <h3 id="tour-title"></h3><p id="tour-note-text"></p><blockquote class="tour-quote" id="tour-quote" hidden></blockquote>
+      <div class="tour-compare" id="tour-compare" hidden><div class="compare-part"><span id="tour-compare-from-label">SUR LE BOUTON</span><strong id="tour-button-label"></strong></div><div class="compare-arrow" aria-hidden="true">↓</div><div class="compare-part compare-destination"><span id="tour-compare-to-label">EN BAS À GAUCHE</span><strong id="tour-button-url"></strong></div><p id="tour-compare-message"></p></div>
+      <div class="tour-note-actions"><button type="button" id="tour-back">← Revenir</button><button type="button" id="tour-next">Continuer →</button></div>
+    </section>
+    <section class="click-modal" id="click-modal" role="dialog" aria-modal="true" aria-labelledby="click-modal-title" hidden><div class="click-modal-card"><span class="click-modal-icon" id="click-modal-icon" aria-hidden="true">!</span><h2 id="click-modal-title"></h2><p id="click-modal-text"></p><div class="click-modal-destination" id="click-modal-destination"></div><button type="button" id="click-modal-close">Retour au message</button></div></section>
+    <div class="confetti-layer" id="confetti-layer" hidden aria-hidden="true"></div>
+  </body>
+</html>
